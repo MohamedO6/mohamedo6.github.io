@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Presentation</title>
+    <!-- Use Tailwind CSS for a modern, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .slide-container {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            max-width: 900px;
+            width: 100%;
+            height: auto;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.5s ease-in-out;
+            margin: 1rem;
+        }
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            color: white;
+            background-color: #4f46e5;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .nav-button:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+        .nav-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center p-4">
+
+    <!-- Main presentation container -->
+    <div class="slide-container">
+        <!-- Title and content area -->
+        <div id="slide-content" class="flex-grow">
+            <!-- Slide content will be rendered here -->
+        </div>
+
+        <!-- Navigation buttons and slide counter -->
+        <div class="flex justify-between items-center mt-8">
+            <button id="prev-button" class="nav-button" disabled>Previous</button>
+            <span id="slide-counter" class="text-gray-500 font-medium">Slide 1 of 13</span>
+            <button id="next-button" class="nav-button">Next</button>
+        </div>
+    </div>
+
+    <script>
+        // Store presentation data in a JavaScript array
+        const slides = [
+            // Slide 1: Title Slide
+            {
+                title: "Mohamed Tamer: Innovating for the Future",
+                subtitle: "My Journey in STEM, Entrepreneurship, and AI",
+                content: ""
+            },
+            // Slide 2: About Me
+            {
+                title: "About Me (Personal Profile)",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li><strong>Name:</strong> Mohamed Tamer</li>
+                        <li><strong>Contact:</strong> mohammed.tamer06@gmail.com | +201010692070 | <a href="https://www.google.com/search?q=https://www.linkedin.com/in/mohamed-tamer-562921231" target="_blank" class="text-blue-500 hover:underline">LinkedIn</a></li>
+                        <li><strong>Programming Background:</strong> Python & C++</li>
+                        <li><strong>Career Interests:</strong> Artificial Intelligence, Machine Learning, Data Engineering, Startups.</li>
+                        <li><strong>Goal:</strong> Launching a tech startup within two years.</li>
+                    </ul>
+                `
+            },
+            // Slide 3: Education
+            {
+                title: "Education",
+                content: `
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Zewail City of Science and Technology</h3>
+                            <p class="text-md text-gray-600">Communication and Information Engineering (September 2024 - July 2028).</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Sharkya STEM School</h3>
+                            <p class="text-md text-gray-600">September 2021 - July 2024.</p>
+                            <p class="text-md text-gray-600">GPA (Grade 12): 4/4.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">El-nasser Salah El-deen School</h3>
+                            <p class="text-md text-gray-600">2016 - 2021.</p>
+                            <p class="text-md text-gray-600">GPA: 4/4.</p>
+                        </div>
+                    </div>
+                `
+            },
+            // Slide 4: Key Experiences & Scholarships
+            {
+                title: "Key Experiences & Scholarships",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li><strong>USAID Scholarship Recipient:</strong> (September 2024 - Present)
+                            <br><span class="text-sm text-gray-500">Selected among 11,000 applicants for a full scholarship.</span></li>
+                        <li><strong>Rise Global Finalist:</strong> (April 2024 - Present)
+                            <br><span class="text-sm text-gray-500">Chosen as one of the top 500 promising teenagers globally from over 80,000 applicants.</span></li>
+                        <li><strong>Future Generation of Scientists (FGS) Participant:</strong> (July - August 2023)
+                            <br><span class="text-sm text-gray-500">Gained hands-on research experience in a university lab.</span></li>
+                        <li><strong>OBM Education Ambassador:</strong> (November 2022 - Present)
+                            <br><span class="text-sm text-gray-500">One of 310 ambassadors connecting students and educational institutions.</span></li>
+                    </ul>
+                `
+            },
+            // Slide 5: Notable Projects
+            {
+                title: "Notable Projects",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li><strong>Smart Wheelchair for People with Disabilities:</strong> (October 2023 - February 2024)
+                            <br><span class="text-sm text-gray-500">A project using SLAM technology, controllable via joystick, voice, or a map.</span></li>
+                        <li><strong>Green Grow:</strong> (February - June 2023)
+                            <br><span class="text-sm text-gray-500">An automated farm using sensors and control systems for efficient crop growth.</span></li>
+                        <li><strong>Byte Boost:</strong> (July - September 2023)
+                            <br><span class="text-sm text-gray-500">An online marketplace for open-source projects.</span></li>
+                        <li><strong>Improving the Efficiency of a Stirling Engine:</strong> (February - June 2022)
+                            <br><span class="text-sm text-gray-500">A research paper was accepted by three reputable scientific journals.</span></li>
+                    </ul>
+                `
+            },
+            // Slide 6: Awards & Achievements
+            {
+                title: "Awards & Achievements",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li><strong>Fifth Place:</strong> International Science and Engineering Innovation Competitions (ISIEC & ITC 2024).</li>
+                        <li><strong>Fourth Place:</strong> SIC Competition (August 2023).</li>
+                        <li><strong>Second Place:</strong> Climathon Egypt Series (November 2022).</li>
+                        <li><strong>First Place:</strong> IEEE Victoris (IoT) at Mansoura University (October 2022).</li>
+                        <li><strong>Bronze Medal:</strong> International Astronomy and Astrophysics Competition (IAAC) (October 2022).</li>
+                        <li><strong>Recipient of a scholarship from The Knowledge Society (TKS):</strong> (July 2023).</li>
+                    </ul>
+                `
+            },
+            // Slide 7: SWOT Analysis
+            {
+                title: "SWOT Analysis",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg text-gray-700">
+                        <div>
+                            <h3 class="text-xl font-semibold text-green-600">Strengths</h3>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li>Strong programming background.</li>
+                                <li>Fast learner and problem-solver.</li>
+                                <li>Ongoing DEPI training.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-red-600">Weaknesses</h3>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li>Limited real-world project exposure.</li>
+                                <li>No current experience in Machine Learning.</li>
+                                <li>Need more depth in tools like SQL.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-blue-600">Opportunities</h3>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li>Access to free training programs.</li>
+                                <li>Time to build a strong portfolio.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-yellow-600">Threats</h3>
+                            <ul class="list-disc list-inside mt-2 space-y-1">
+                                <li>High competition in the tech job market.</li>
+                                <li>Academic workload may limit available time.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            // Slide 8: SMART Goals
+            {
+                title: "SMART Goals",
+                content: `
+                    <ul class="list-decimal list-inside space-y-4 text-lg text-gray-700">
+                        <li><strong>Entry into ML by Dec 2026:</strong>
+                            <p class="text-sm text-gray-500">Complete foundational ML courses + 2 projects.</p>
+                        </li>
+                        <li><strong>Entry into Data Engineering by June 2027:</strong>
+                            <p class="text-sm text-gray-500">Learn necessary tools + 1 real data pipeline project.</p>
+                        </li>
+                        <li><strong>Build a Startup MVP by Dec 2027:</strong>
+                            <p class="text-sm text-gray-500">Create a Minimum Viable Product for a data/AI-based tech startup.</p>
+                        </li>
+                        <li><strong>Join an Incubation Program by June 2028:</strong>
+                            <p class="text-sm text-gray-500">Submit the MVP and apply to accelerators.</p>
+                        </li>
+                    </ul>
+                `
+            },
+            // Slide 9: Action Plan (July - December 2026)
+            {
+                title: "Action Plan: July - December 2026",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li>Review basics of Linear Algebra, ODE, and Statistics.</li>
+                        <li>Take Andrew Ng's ML Course or a similar program.</li>
+                        <li>Build two Machine Learning projects (e.g., classification, prediction).</li>
+                        <li>Participate in a Kaggle competition.</li>
+                    </ul>
+                `
+            },
+            // Slide 10: Action Plan (January - June 2027)
+            {
+                title: "Action Plan: January - June 2027",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li>Learn Data Engineering tools (Airflow, Spark, ETL pipelines).</li>
+                        <li>Build an end-to-end data pipeline project.</li>
+                        <li>Apply for internships/jobs as a Data or ML Engineer.</li>
+                    </ul>
+                `
+            },
+            // Slide 11: Action Plan (July 2027 - June 2028)
+            {
+                title: "Action Plan: July 2027 - June 2028",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li>Ideate and define the startup concept.</li>
+                        <li>Build the MVP (front-end + back-end).</li>
+                        <li>Pitch in local or online demo days.</li>
+                        <li>Apply to incubators/accelerators.</li>
+                    </ul>
+                `
+            },
+            // Slide 12: Skills and Activities
+            {
+                title: "Skills and Activities",
+                content: `
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Technical Skills</h3>
+                            <ul class="list-disc list-inside text-lg text-gray-700 mt-2">
+                                <li>Intermediate Python, C++, HTML/CSS; Advanced Arduino C.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Soft Skills</h3>
+                            <ul class="list-disc list-inside text-lg text-gray-700 mt-2">
+                                <li>Leadership, Teamwork, Communication, Time Management, Problem-Solving, Critical Thinking.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Languages</h3>
+                            <ul class="list-disc list-inside text-lg text-gray-700 mt-2">
+                                <li>Native Arabic, Proficient English, Intermediate German.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Activities</h3>
+                            <ul class="list-disc list-inside text-lg text-gray-700 mt-2">
+                                <li>Chief Content Officer at Shbab btsad shbab (July 2023 - Present)</li>
+                                <li>IYMC Ambassador (July 2023 - Present)</li>
+                                <li>OBM Ambassador (June 2023 - Present)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            // Slide 13: Looking Ahead
+            {
+                title: "Looking Ahead",
+                content: `
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li>Reiterate my passion for AI, Machine Learning, and Entrepreneurship.</li>
+                        <li>Emphasize my commitment to building a successful startup.</li>
+                        <li>Open for questions and discussion.</li>
+                    </ul>
+                `
+            },
+        ];
+
+        let currentSlideIndex = 0;
+
+        const slideContentDiv = document.getElementById('slide-content');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const slideCounter = document.getElementById('slide-counter');
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            let html = '';
+
+            // Handle the title slide with a different layout
+            if (index === 0) {
+                html = `
+                    <div class="h-full flex flex-col justify-center items-center text-center">
+                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4">${slide.title}</h1>
+                        <h2 class="text-xl md:text-2xl lg:text-3xl text-gray-600">${slide.subtitle}</h2>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">${slide.title}</h1>
+                    <div class="text-lg leading-relaxed text-gray-700">
+                        ${slide.content}
+                    </div>
+                `;
+            }
+
+            slideContentDiv.innerHTML = html;
+            updateButtons();
+            updateCounter();
+        }
+
+        function updateButtons() {
+            prevButton.disabled = currentSlideIndex === 0;
+            nextButton.disabled = currentSlideIndex === slides.length - 1;
+        }
+
+        function updateCounter() {
+            slideCounter.textContent = `Slide ${currentSlideIndex + 1} of ${slides.length}`;
+        }
+
+        function handleNext() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        function handlePrevious() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        prevButton.addEventListener('click', handlePrevious);
+        nextButton.addEventListener('click', handleNext);
+
+        // Initial render
+        window.onload = function() {
+            renderSlide(currentSlideIndex);
+        };
+
+    </script>
+</body>
+</html>
